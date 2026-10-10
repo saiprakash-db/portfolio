@@ -1,0 +1,37 @@
+{
+  "name": "sai-prakash-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build && node scripts/seo.mjs",
+    "preview": "vite preview --host 127.0.0.1",
+    "assets": "node scripts/fetch-assets.mjs",
+    "test:browser": "node scripts/browser-test.mjs",
+    "test:contrast": "node scripts/check-contrast.mjs",
+    "test:pipeline": "node --experimental-strip-types scripts/test-pipeline.mjs",
+    "test:toys": "node --experimental-strip-types scripts/test-toy-physics.mjs",
+    "test:site": "node scripts/check-site.mjs",
+    "check": "npm run build && npm run test:site && npm run test:pipeline && npm run test:toys && npm run test:contrast && npm run test:responsive",
+    "test:responsive": "node scripts/test-responsive.mjs"
+  },
+  "dependencies": {
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "framer-motion": "12.23.24"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "5.1.1",
+    "typescript": "5.8.3",
+    "vite": "6.4.1",
+    "tailwindcss": "3.4.19",
+    "postcss": "^8.5.0",
+    "autoprefixer": "^10.4.20",
+    "playwright": "^1.63.0",
+    "lighthouse": "^12.1.0",
+    "esbuild": "^0.25.12"
+  }
+}

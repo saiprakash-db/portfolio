@@ -1,0 +1,412 @@
+/* Project exhibits: evidence first, an optional second page for the method. */
+.project-exhibit {
+  height: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.exhibit-masthead {
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.exhibit-index {
+  font-size: 13px;
+  color: var(--accent);
+}
+.exhibit-index > span {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  margin-left: 8px;
+}
+.exhibit-repo {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.exhibit-window {
+  margin: 0 14px;
+  padding: 22px 18px 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  position: relative;
+}
+.exhibit-paper-edge {
+  position: absolute;
+  top: 15px;
+  left: 26px;
+  right: 26px;
+  height: 22px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+}
+.exhibit-pages {
+  display: grid;
+  position: relative;
+  isolation: isolate;
+}
+.exhibit-proof,
+.exhibit-notes {
+  grid-area: 1/1;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 22px;
+  box-shadow: 0 5px 12px -10px #14181f35;
+}
+.exhibit-proof[aria-hidden="true"],
+.exhibit-notes[aria-hidden="true"] {
+  pointer-events: none;
+}
+.exhibit-document-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.045em;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.exhibit-proof {
+  display: flex;
+  flex-direction: column;
+}
+.exhibit-proof .mini-visual {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+}
+.exhibit-proof .commerce-visual,
+.exhibit-proof .churn-visual {
+  width: 100%;
+  padding: 22px 0 12px;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+}
+.exhibit-proof .visual-heading {
+  display: none;
+}
+.exhibit-proof .commerce-value {
+  font-size: clamp(40px, 4.5vw, 64px);
+  line-height: 1.12;
+  margin: 8px 0 10px;
+  letter-spacing: -0.05em;
+  color: var(--text);
+}
+.exhibit-proof .commerce-value > span {
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.exhibit-proof .visual-metric-label {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.exhibit-proof .commerce-ledger {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 28px 0;
+}
+.exhibit-proof .commerce-ledger > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.exhibit-proof .commerce-ledger > div:last-child {
+  display: flex;
+}
+.exhibit-proof .commerce-ledger strong {
+  font-size: clamp(17px, 2vw, 23px);
+  letter-spacing: -0.025em;
+}
+.exhibit-proof .commerce-ledger span {
+  font-size: 11px;
+}
+.exhibit-proof .commerce-foot {
+  margin-top: auto;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--border);
+}
+.exhibit-proof .commerce-foot .mono {
+  font-size: 10px;
+  letter-spacing: 0;
+}
+.exhibit-proof .churn-score {
+  margin: 8px 0 25px;
+  gap: 14px;
+}
+.exhibit-proof .churn-score > strong {
+  font-size: clamp(44px, 4.7vw, 66px);
+  letter-spacing: -0.06em;
+  color: var(--text);
+}
+.exhibit-proof .churn-score > span {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.exhibit-proof .churn-comparison {
+  display: grid;
+  gap: 16px;
+}
+.exhibit-proof .churn-comparison > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 7px;
+  font-size: 12px;
+}
+.exhibit-proof .churn-comparison > div > div {
+  grid-row: 2;
+  grid-column: 1/-1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.exhibit-proof .churn-comparison > div > span:last-child {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 12px;
+}
+.exhibit-proof .churn-comparison i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.exhibit-proof .churn-comparison > div:first-child i {
+  opacity: 0.55;
+}
+.exhibit-proof .churn-audit {
+  margin-top: auto;
+  padding: 22px 0 0;
+  font-size: 11px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.exhibit-disclosure {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: 18px;
+}
+.exhibit-notes {
+  display: flex;
+  flex-direction: column;
+}
+.exhibit-notes h4 {
+  font-size: clamp(21px, 2.2vw, 27px);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  margin: 20px 0;
+  max-width: 22ch;
+}
+.exhibit-notes ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 15px;
+}
+.exhibit-notes li {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+}
+.exhibit-notes li > .mono {
+  color: var(--accent);
+  font-size: 10px;
+  padding-top: 3px;
+}
+.exhibit-note {
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  margin: 20px 0 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.exhibit-dashboard {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--accent);
+  font-size: 12px;
+  margin-top: auto;
+}
+.exhibit-viewbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 2px;
+}
+.exhibit-page-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.exhibit-page-indicator i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: 0.3;
+}
+.exhibit-page-indicator i.selected {
+  opacity: 1;
+  background: var(--accent);
+}
+.exhibit-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--accent);
+  min-height: 44px;
+  padding: 0 5px 0 12px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.exhibit-toggle > span {
+  display: flex;
+}
+.exhibit-editorial {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.exhibit-editorial > .eyebrow {
+  font-size: 10px;
+  line-height: 1.6;
+}
+.exhibit-editorial h3 {
+  margin: 12px 0;
+  font-size: clamp(26px, 3vw, 35px);
+  line-height: 1.13;
+  letter-spacing: -0.045em;
+}
+.exhibit-editorial > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.exhibit-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 15px;
+  margin: 20px 0 26px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.exhibit-cta {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+.exhibit-arrow {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  transition: transform 0.3s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .exhibit-cta:hover .exhibit-arrow {
+    transform: translateX(3px);
+  }
+  .exhibit-toggle:hover,
+  .exhibit-repo:hover {
+    color: var(--text);
+  }
+}
+@media (max-width: 650px) {
+  .exhibit-masthead {
+    padding: 10px 18px;
+  }
+  .exhibit-window {
+    margin: 0 10px;
+    padding: 18px 10px 0;
+  }
+  .exhibit-paper-edge {
+    left: 17px;
+    right: 17px;
+    top: 12px;
+  }
+  .exhibit-proof,
+  .exhibit-notes {
+    padding: 18px 15px;
+  }
+  .exhibit-editorial {
+    padding: 24px 20px;
+  }
+  .exhibit-proof .commerce-ledger {
+    gap: 7px;
+  }
+  .exhibit-proof .commerce-value {
+    font-size: 45px;
+  }
+  .exhibit-proof .churn-score > strong {
+    font-size: 50px;
+  }
+  .exhibit-document-label {
+    font-size: 9px;
+  }
+  .exhibit-index > span {
+    margin-left: 5px;
+  }
+  .exhibit-notes h4 {
+    font-size: 23px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .exhibit-arrow {
+    transition: none;
+  }
+}

@@ -1,0 +1,181 @@
+/* Responsive layout contract. Loaded after component styles so tablet rules
+   cannot restore desktop columns on narrower screens. */
+@media (max-width: 850px) {
+  .hero-grid,
+  .contact-layout,
+  .education-layout,
+  .about-layout,
+  .insight-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hero-grid {
+    gap: 36px;
+  }
+  .hero-copy,
+  .hero-side {
+    width: 100%;
+    min-width: 0;
+  }
+  .hero-side {
+    max-width: 580px;
+    justify-self: center;
+  }
+  .contact-layout {
+    gap: 32px;
+  }
+  .contact-links {
+    width: 100%;
+    padding: 0;
+    align-self: start;
+  }
+  .contact-links > a {
+    grid-template-columns: 76px minmax(0, 1fr) auto;
+    gap: 12px;
+    min-height: 64px;
+    padding: 18px 0;
+  }
+  .contact-links > a > span:first-child {
+    grid-column: auto;
+  }
+  .contact-value {
+    white-space: nowrap;
+  }
+  .email-link {
+    max-width: 100%;
+    gap: 12px;
+  }
+  .contact-email-address {
+    min-width: 0;
+  }
+  .results-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .results-grid > div:nth-child(3) {
+    border-left: 0;
+  }
+  .story-context {
+    position: static;
+  }
+  .insight-grid {
+    gap: 28px;
+  }
+}
+@media (max-width: 650px) {
+  .contact-section {
+    padding: 52px 0 56px;
+  }
+  .contact-top {
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .contact-top > .mono {
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+  .contact-layout {
+    gap: 30px;
+  }
+  .contact-layout h2 {
+    font-size: clamp(32px, 8.6vw, 44px);
+    line-height: 1.12;
+    max-width: 16ch;
+    text-wrap: initial;
+  }
+  .contact-layout p {
+    font-size: 16px;
+    line-height: 1.7;
+    margin-top: 22px;
+    max-width: 38ch;
+  }
+  .contact-layout p br {
+    display: none;
+  }
+  .email-link {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: clamp(16px, 4.65vw, 21px);
+    line-height: 1.5;
+    margin-top: 24px;
+    padding: 14px 0;
+    letter-spacing: -0.025em;
+  }
+  .contact-email-address {
+    overflow-wrap: anywhere;
+  }
+  .contact-links > a {
+    grid-template-columns: 68px minmax(0, 1fr) 18px;
+    gap: 10px;
+    font-size: 16px;
+  }
+  .contact-links > a > span:first-child {
+    font-size: 11px;
+  }
+  .contact-links > a > svg {
+    width: 17px;
+    justify-self: end;
+  }
+  .copy-email {
+    margin-top: 12px;
+  }
+  .story-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+  .story-steps {
+    margin-top: 0;
+  }
+  .skills-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .about-copy {
+    padding-top: 0;
+  }
+  .education-layout,
+  .about-layout {
+    gap: 32px;
+  }
+  .certificate {
+    padding: 24px 20px;
+  }
+  .certificate-heading {
+    gap: 10px;
+    align-items: baseline;
+  }
+  .certificate-heading > .mono {
+    font-size: 11px;
+  }
+  .hero-actions {
+    flex-wrap: wrap;
+  }
+  .exhibit-proof .commerce-ledger > div:last-child {
+    grid-column: auto;
+  }
+  .project-exhibit,
+  .workbench,
+  .skill-group,
+  .story-context,
+  .story-steps,
+  .insight-copy,
+  .insight-chart {
+    min-width: 0;
+  }
+  footer {
+    gap: 20px 12px;
+  }
+}
+@media (max-width: 359px) {
+  .contact-top {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .contact-links > a {
+    grid-template-columns: 60px minmax(0, 1fr) 16px;
+    gap: 8px;
+    font-size: 15px;
+  }
+}

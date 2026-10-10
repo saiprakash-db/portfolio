@@ -1,0 +1,236 @@
+/* Small, opt-in interactions. Isolated from the portfolio's informational UI. */
+.toy-panel {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 22px;
+  overflow: hidden;
+}
+.toy-panel h3 {
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  margin: 12px 0;
+}
+.toy-panel p {
+  color: var(--muted);
+}
+.cricket-toy {
+  margin-top: 32px;
+  padding: 26px;
+  max-width: 540px;
+}
+.cricket-field {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 8px 0 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+  border-radius: 12px;
+}
+.cricket-field svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.cricket-field:disabled {
+  cursor: default;
+}
+.toy-ground {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+.toy-pitch {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+  opacity: 0.23;
+}
+.toy-stumps {
+  stroke: var(--accent);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.toy-bail {
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.toy-svg-label {
+  fill: var(--muted);
+  font:
+    16px "JetBrains Mono",
+    monospace;
+  letter-spacing: 0.5px;
+}
+.toy-message {
+  min-height: 1.6em;
+  font-size: 0.94rem;
+  margin: 15px 0;
+  line-height: 1.5;
+}
+.toy-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.toy-action,
+.toy-reset {
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-height: 44px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.toy-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 10px 16px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid transparent;
+}
+.toy-action:disabled {
+  cursor: default;
+}
+.toy-action span {
+  font-size: 1.2em;
+}
+.toy-reset {
+  color: var(--muted);
+  background: none;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+}
+.toy-action:active:not(:disabled),
+.toy-reset:active {
+  transform: translateY(1px);
+}
+.marble-toy {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.8fr) minmax(0, 1.5fr);
+  gap: 28px;
+  align-items: center;
+  padding: 32px;
+  margin-top: 36px;
+}
+.marble-intro > p {
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 34ch;
+  margin: 0 0 22px;
+}
+.marble-scene {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+.marble-playground {
+  min-width: 0;
+}
+.marble-playground > .toy-message {
+  text-align: center;
+  font-size: 0.84rem;
+  margin: 16px 0 0;
+}
+.marble-rail,
+.marble-cup,
+.marble-tray {
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.marble-rail {
+  opacity: 0.6;
+}
+.marble-inlet {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 5;
+  fill: var(--accent-soft);
+}
+.marble-inlet.is-waiting {
+  stroke-width: 2.5;
+}
+.marble-handle {
+  cursor: grab;
+  touch-action: none;
+  outline: none;
+}
+.marble-handle.is-dragging {
+  cursor: grabbing;
+}
+.marble-handle[aria-disabled="true"] {
+  pointer-events: none;
+  touch-action: auto;
+  cursor: default;
+}
+.marble-focus {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 2;
+}
+.marble-handle:focus-visible .marble-focus {
+  stroke: var(--accent);
+}
+.marble-scene .stage-dot {
+  fill: var(--surface);
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+.marble-scene .stage-dot.is-complete {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+.toy-complete {
+  color: var(--accent);
+  font-weight: 700;
+}
+@media (hover: hover) and (pointer: fine) {
+  .toy-action:hover:not(:disabled) {
+    border-color: var(--accent);
+  }
+  .toy-reset:hover {
+    color: var(--text);
+  }
+}
+@media (max-width: 767px) {
+  .marble-toy {
+    grid-template-columns: 1fr;
+    padding: 24px 18px;
+    gap: 28px;
+  }
+  .marble-intro > p {
+    max-width: 48ch;
+  }
+  .cricket-toy {
+    padding: 22px 18px;
+  }
+  .marble-playground > .toy-message {
+    max-width: 32ch;
+    margin: 18px auto 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toy-action:active:not(:disabled),
+  .toy-reset:active {
+    transform: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .marble-scene .toy-svg-label {
+    font-size: 20px;
+    letter-spacing: 0;
+  }
+}

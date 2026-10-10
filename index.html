@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#FAF8F5" />
+    <title>Sai Prakash Portfolio</title>
+    <meta
+      name="description"
+      content="Sai Prakash Lingala is a recent AI graduate in Hyderabad pursuing junior data engineering roles. Explore validated SQL analytics and leakage-safe Databricks pipelines."
+    />
+    <meta
+      property="og:title"
+      content="Sai Prakash Lingala — Data Engineering"
+    />
+    <meta
+      property="og:description"
+      content="Engineering trust in every row. SQL, Python and Databricks projects by Sai Prakash Lingala."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link
+      rel="preload"
+      href="/fonts/outfit-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/outfit-700.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      try {
+        var t = localStorage.getItem("sai-theme");
+        document.documentElement.dataset.theme =
+          t === "light" || t === "dark"
+            ? t
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+      } catch (e) {
+        document.documentElement.dataset.theme = matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches
+          ? "dark"
+          : "light";
+      }
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute(
+          "content",
+          document.documentElement.dataset.theme === "dark"
+            ? "#0E1114"
+            : "#FAF8F5",
+        );
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <div
+        style="
+          max-width: 42rem;
+          margin: 4rem auto;
+          padding: 1.5rem;
+          font: 18px/1.6 system-ui;
+          background: #fff;
+          color: #14181f;
+        "
+      >
+        <h1>Sai Prakash Lingala</h1>
+        <p>Data engineering portfolio · Hyderabad, India</p>
+        <p>
+          Enable JavaScript to explore the interactive portfolio, or use these
+          direct links:
+        </p>
+        <p>
+          <a href="mailto:saiprakash15b@gmail.com">Email Sai Prakash</a> ·
+          <a href="/assets/sai-prakash-lingala-resume.pdf" download
+            >Download resume</a
+          >
+          · <a href="https://github.com/saiprakash-db">GitHub projects</a>
+        </p>
+      </div>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
