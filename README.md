@@ -26,7 +26,7 @@ Edit `src/data.ts` for profile information, contacts, project descriptions and m
 
 - Resume: `public/assets/sai-prakash-lingala-resume.pdf` (the supplied original, unchanged).
 - Certificates: local WebP crops of the supplied screenshots, linked to their original verification URLs.
-- Open Graph image: `public/assets/og-image.png`.
+- Open Graph image: `public/assets/og-image-dark.png`.
 - Fonts: self-hosted Outfit in 400, 500, 600 and 700 weights, with JetBrains Mono for technical labels. The page makes no external font requests. Headings use 600/700, body text is generally 16px, and narrow-screen metric tiles reflow vertically. Font loading and layout shift still need browser measurement.
 - Scrolling: native wheel, trackpad, touch and keyboard scrolling keeps browser momentum independent of interactive illustrations. Section links use CSS smooth scrolling, disabled for reduced motion.
 - Contact uses email and telephone links plus a copy-email action with explicit success/failure feedback; no backend or form service is needed.

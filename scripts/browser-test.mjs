@@ -299,7 +299,7 @@ try {
     "/assets/sai-prakash-lingala-resume.pdf",
     "/assets/deloitte-certificate.webp",
     "/assets/ibm-certificate.webp",
-    "/assets/og-image.png",
+    "/assets/og-image-dark.png",
     "/favicon.svg",
   ]) {
     assert.equal(

@@ -14,8 +14,8 @@ if (origin) {
       `<link rel="canonical" href="${url}/"/><meta property="og:url" content="${url}/"/></head>`,
     )
     .replace(
-      'content="/assets/og-image.png"',
-      `content="${url}/assets/og-image.png"`,
+      'content="/assets/og-image-dark.png"',
+      `content="${url}/assets/og-image-dark.png"`,
     );
   await writeFile(
     "dist/sitemap.xml",
