@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { navigation } from "../data";
 import { Icon } from "./ui";
+import { scrollToSection } from "../lib/scroll-to-section";
 
 export function CommandPalette({
   open,
@@ -14,10 +15,10 @@ export function CommandPalette({
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
   const entries = [
-    ...navigation,
+    ...navigation.filter((entry) => entry.id !== "journey"),
+    { id: "journey", label: "Journey & credentials" },
     { id: "olist", label: "Olist project" },
     { id: "kkbox", label: "KKBOX project" },
-    { id: "education", label: "Education & certifications" },
   ].filter((n) => n.label.toLowerCase().includes(query.trim().toLowerCase()));
 
   useEffect(() => {
@@ -47,12 +48,12 @@ export function CommandPalette({
         if (location.hash !== `#${id}`) history.pushState(null, "", `#${id}`);
         section.setAttribute("tabindex", "-1");
         section.focus({ preventScroll: true });
-        section.scrollIntoView({
-          block: "start",
-          behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-            ? "instant"
+        scrollToSection(
+          id,
+          matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
             : "smooth",
-        });
+        );
       }),
     );
   };

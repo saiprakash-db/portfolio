@@ -7,16 +7,22 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { playfulUI } from "../../data";
-import { marblePose, MARBLE_DURATION, railPath } from "../../lib/toy-physics";
+import {
+  marblePose,
+  MARBLE_DURATION,
+  ROLL_DURATION,
+  railPath,
+} from "../../lib/toy-physics";
 import { useToyClock } from "./useToyClock";
 export function MarblePipeline() {
   const copy = playfulUI.marble,
-    clock = useToyClock(MARBLE_DURATION);
+    clock = useToyClock(MARBLE_DURATION, true);
   const id = useId().replace(/:/g, ""),
     svg = useRef<SVGSVGElement>(null);
   const x = useMotionValue(48),
     y = useMotionValue(48),
-    rotate = useMotionValue(0);
+    rotate = useMotionValue(0),
+    trail = useMotionValue(0);
   const [stage, setStage] = useState(0),
     [dragging, setDragging] = useState(false),
     [capturing, setCapturing] = useState(false),
@@ -54,12 +60,14 @@ export function MarblePipeline() {
     x.set(p.x);
     y.set(p.y);
     rotate.set(p.rotation);
+    trail.set(Math.min(1, t / ROLL_DURATION));
     updateStage(p.stage);
   });
   const home = () => {
     stop();
     const previous = { x: x.get(), y: y.get(), rotation: rotate.get() };
     clock.reset();
+    trail.set(0);
     x.set(previous.x);
     y.set(previous.y);
     rotate.set(previous.rotation);
@@ -67,6 +75,7 @@ export function MarblePipeline() {
     setDragging(false);
     setCapturing(false);
     updateStage(0);
+    trail.set(0);
     rotate.set(0);
     if (clock.reduced) {
       x.set(48);
@@ -84,6 +93,7 @@ export function MarblePipeline() {
     setDragging(false);
     setCapturing(true);
     updateStage(0);
+    trail.set(0);
     rotate.set(0);
     const token = generation.current;
     if (clock.reduced) {
@@ -91,8 +101,14 @@ export function MarblePipeline() {
       setCapturing(false);
       return;
     }
-    const a = animate(x, 130, { type: "spring", stiffness: 240, damping: 26 }),
-      b = animate(y, 65, { type: "spring", stiffness: 240, damping: 26 });
+    const a = animate(x, 130, {
+        duration: 0.9,
+        ease: [0.22, 1, 0.36, 1],
+      }),
+      b = animate(y, 65, {
+        duration: 0.9,
+        ease: [0.22, 1, 0.36, 1],
+      });
     animations.current = [a, b];
     Promise.all([a, b]).then(() => {
       if (generation.current !== token) return;
@@ -197,8 +213,15 @@ export function MarblePipeline() {
               transform="translate(0 18)"
               className="marble-rail"
             />
+            <motion.path
+              d={`${railPath} C522 170 535 170 535 185`}
+              transform="translate(0 18)"
+              style={{ pathLength: trail }}
+              className="marble-trail"
+              aria-hidden="true"
+            />
             <path
-              d="M510 186v12q0 7 8 7h27q8 0 8-8v-45"
+              d="M510 198q0 7 8 7h27q8 0 8-8v-45"
               className="marble-cup"
             />
             {copy.stages.map((s, i) => (
@@ -252,6 +275,7 @@ export function MarblePipeline() {
             }}
           >
             <circle r={radius} fill="transparent" />
+            <circle r="24" className="marble-glow" />
             <circle r="22" className="marble-focus" />
             <circle r="18" fill={`url(#${id})`} />
             <path

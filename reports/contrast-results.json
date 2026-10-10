@@ -115,112 +115,112 @@
     "theme": "dark",
     "foreground": "text",
     "background": "bg",
-    "ratio": 15.94,
+    "ratio": 16.13,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "text",
     "background": "surface",
-    "ratio": 14.74,
+    "ratio": 15.21,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "text",
     "background": "alt",
-    "ratio": 13.53,
+    "ratio": 14.57,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "text",
     "background": "soft",
-    "ratio": 12.25,
+    "ratio": 15.14,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "muted",
     "background": "bg",
-    "ratio": 9.81,
+    "ratio": 10.33,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "muted",
     "background": "surface",
-    "ratio": 9.07,
+    "ratio": 9.74,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "muted",
     "background": "alt",
-    "ratio": 8.33,
+    "ratio": 9.32,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "muted",
     "background": "soft",
-    "ratio": 7.54,
+    "ratio": 9.69,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "accent",
     "background": "bg",
-    "ratio": 9.36,
+    "ratio": 5.03,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "accent",
     "background": "surface",
-    "ratio": 8.66,
+    "ratio": 4.74,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "accent",
     "background": "alt",
-    "ratio": 7.95,
+    "ratio": 4.54,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "accent",
     "background": "soft",
-    "ratio": 7.2,
+    "ratio": 4.72,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "gold",
     "background": "bg",
-    "ratio": 8.31,
+    "ratio": 5.03,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "gold",
     "background": "surface",
-    "ratio": 7.68,
+    "ratio": 4.74,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "gold",
     "background": "alt",
-    "ratio": 7.06,
+    "ratio": 4.54,
     "status": "PASS"
   },
   {
     "theme": "dark",
     "foreground": "gold",
     "background": "soft",
-    "ratio": 6.39,
+    "ratio": 4.72,
     "status": "PASS"
   }
 ]

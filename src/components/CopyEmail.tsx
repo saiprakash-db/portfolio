@@ -32,7 +32,12 @@ export function CopyEmail() {
   };
   return (
     <div className="copy-email">
-      <button type="button" onClick={copy} disabled={busy}>
+      <button
+        type="button"
+        onClick={copy}
+        disabled={busy}
+        data-status={status}
+      >
         {status === "copied" ? (
           <Icon name="check" size={16} />
         ) : (

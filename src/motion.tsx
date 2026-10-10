@@ -20,10 +20,18 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: reduced ? 0 : 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.08 }}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      initial={
+        reduced
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: 24, scale: 0.985, filter: "blur(7px)" }
+      }
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+      viewport={{ once: true, amount: 0.12, margin: "0px 0px -7% 0px" }}
+      transition={{
+        duration: reduced ? 0 : 0.68,
+        delay: reduced ? 0 : delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
     </motion.div>

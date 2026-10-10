@@ -24,7 +24,7 @@ try {
   const html = render();
   const audit = JSON.parse(
     execFileSync(
-      "python3",
+      process.platform === "win32" ? "python" : "python3",
       [
         "-c",
         `

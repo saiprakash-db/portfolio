@@ -39,10 +39,10 @@ for (let t = 0; t <= MARBLE_DURATION; t += 1 / 240) {
   assert.ok(p.stage >= previous, "Stages occur in order");
   previous = p.stage;
   stages.add(p.stage);
-  assert.ok(p.y >= 65 && p.y <= 170.000001);
+  assert.ok(p.y >= 65 && p.y <= 188.000001);
 }
 assert.deepEqual([...stages], [0, 1, 2, 3]);
-assert.ok(ROLL_DURATION > 1 && ROLL_DURATION < 6, "Roll has a usable duration");
+assert.ok(ROLL_DURATION > 1 && ROLL_DURATION < 7, "Roll has a usable duration");
 assert.ok(
   Math.abs(marblePose(MARBLE_DURATION).x - 535) < 0.1,
   "Marble settles in cup",

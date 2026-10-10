@@ -1,7 +1,20 @@
-export const CRICKET_DURATION = 3.6;
-export const IMPACT_TIME = 1.18;
-const gravity = 760;
-const bounceTime = (95 + Math.sqrt(95 ** 2 + 2 * gravity * 66)) / gravity;
+const FLIGHT_DURATION = 1.3;
+const LANDING_X = 230;
+const WICKET_X = 333;
+const BALL_GRAVITY = 350;
+const FLIGHT_VX = (LANDING_X - 38) / FLIGHT_DURATION;
+const FLIGHT_VY =
+  (180 - 114 - 0.5 * BALL_GRAVITY * FLIGHT_DURATION ** 2) /
+  FLIGHT_DURATION;
+const BOUNCE_VY = -220;
+const BOUNCE_GRAVITY = 450;
+const BOUNCE_DURATION = (WICKET_X - LANDING_X) / FLIGHT_VX;
+const IMPACT_Y =
+  180 + BOUNCE_VY * BOUNCE_DURATION +
+  0.5 * BOUNCE_GRAVITY * BOUNCE_DURATION ** 2;
+const CRICKET_ROLL_DURATION = BOUNCE_DURATION;
+export const IMPACT_TIME = FLIGHT_DURATION + CRICKET_ROLL_DURATION;
+export const CRICKET_DURATION = IMPACT_TIME + 1.5;
 
 /** Analytic ballistic arcs; collisions happen at the floor, independent of frame rate. */
 export function bounce(
@@ -24,26 +37,30 @@ export function bounce(
   return floor;
 }
 function incoming(t: number) {
-  return t <= bounceTime
-    ? 114 - 95 * t + (gravity * t * t) / 2
-    : bounce(
-        180,
-        -(gravity * bounceTime - 95) * 0.58,
-        t - bounceTime,
-        180,
-        gravity,
-        0.58,
-      );
+  return 114 + FLIGHT_VY * t + (BALL_GRAVITY * t * t) / 2;
 }
 export function cricketPose(time: number) {
   const t = Math.max(0, time);
+  if (t <= FLIGHT_DURATION)
+    return {
+      x: 38 + FLIGHT_VX * t,
+      y: incoming(t),
+      rotation: t * 360,
+    };
+  const rollTime = Math.min(t - FLIGHT_DURATION, CRICKET_ROLL_DURATION);
+  const x = LANDING_X + FLIGHT_VX * rollTime;
+  const rollRotation = ((x - LANDING_X) / 10) * (180 / Math.PI);
   if (t <= IMPACT_TIME)
-    return { x: 38 + 250 * t, y: incoming(t), rotation: t * 660 };
+    return {
+      x,
+      y: bounce(180, BOUNCE_VY, rollTime, 180, BOUNCE_GRAVITY, 0.25),
+      rotation: FLIGHT_DURATION * 360 + rollRotation,
+    };
   const d = t - IMPACT_TIME;
   return {
-    x: 333 - 36 * (1 - Math.exp(-2.1 * d)),
-    y: bounce(incoming(IMPACT_TIME), -110, d, 180, gravity, 0.32),
-    rotation: IMPACT_TIME * 660 - 180 * (1 - Math.exp(-2 * d)),
+    x: WICKET_X + 38 * (1 - Math.exp(-3 * d)),
+    y: bounce(IMPACT_Y, -85, d, 180, 420, 0.22),
+    rotation: FLIGHT_DURATION * 360 + rollRotation + 180 * d,
   };
 }
 export function bailPose(time: number, right: boolean) {
@@ -55,7 +72,7 @@ export function bailPose(time: number, right: boolean) {
   };
 }
 export const railPath =
-  "M130 65 C130 120 170 125 220 125 L290 125 C325 125 325 170 365 170 L535 170";
+  "M130 65 C130 120 170 125 220 125 L290 125 C325 125 325 170 365 170 L510 170";
 type Point = { x: number; y: number; distance: number };
 const points: Point[] = [{ x: 130, y: 65, distance: 0 }];
 function add(x: number, y: number) {
@@ -81,7 +98,8 @@ function curve(a: number[], b: number[], c: number[], d: number[]) {
 curve([130, 65], [130, 120], [170, 125], [220, 125]);
 for (let x = 221; x <= 290; x++) add(x, 125);
 curve([290, 125], [325, 125], [325, 170], [365, 170]);
-for (let x = 366; x <= 535; x++) add(x, 170);
+for (let x = 366; x <= 510; x++) add(x, 170);
+curve([510, 170], [522, 170], [535, 170], [535, 185]);
 export const railLength = points[points.length - 1].distance;
 function atDistance(distance: number) {
   const s = Math.max(0, Math.min(railLength, distance));
@@ -104,10 +122,10 @@ function atDistance(distance: number) {
 const frames = [0];
 let speed = 20,
   distance = 0;
-// Rolling solid sphere: 5/7 of the gravitational acceleration along the rail.
+// A lighter gravity and rolling resistance keep the marble's journey deliberate.
 while (distance < railLength && frames.length < 2400) {
   const p = atDistance(distance);
-  speed = Math.max(12, speed + ((450 * p.slope * 5) / 7 - 5) / 120);
+  speed = Math.max(60, speed + ((39 * p.slope * 5) / 7 - 4.3) / 120);
   distance = Math.min(railLength, distance + speed / 120);
   frames.push(distance);
 }
@@ -121,7 +139,7 @@ export function marblePose(time: number) {
     d = Math.max(0, time - ROLL_DURATION);
   return {
     x: p.x - (d ? 6 * Math.exp(-6 * d) * Math.abs(Math.sin(16 * d)) : 0),
-    y: p.y,
+    y: p.y + (d ? 2.5 * Math.exp(-7 * d) * Math.abs(Math.sin(13 * d)) : 0),
     rotation: ((s / 18) * 180) / Math.PI,
     stage: p.x >= 534 ? 3 : p.x >= 365 ? 2 : p.x >= 220 ? 1 : 0,
   };

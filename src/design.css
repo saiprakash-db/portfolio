@@ -652,16 +652,6 @@ footer {
   color: #c1d8d3;
   letter-spacing: 0.025em;
 }
-.workbench-dots {
-  display: flex;
-  gap: 4px;
-}
-.workbench-dots > i {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #809e9e;
-}
 .architecture-art {
   position: relative;
   height: 202px;
@@ -3571,7 +3561,10 @@ html {
   color: var(--accent);
 }
 .desktop-nav a:hover {
-  color: var(--accent);
+  color: var(--text);
+}
+.desktop-nav a:hover:not([aria-current="location"]) {
+  color: var(--text);
 }
 .nav-actions {
   gap: 10px;
@@ -3631,21 +3624,9 @@ html {
     opacity 0.28s var(--ease),
     transform 0.5s var(--ease);
 }
-.shift-sun {
-  opacity: 1;
-  transform: rotate(0) scale(1);
-}
 .shift-moon {
-  opacity: 0;
-  transform: rotate(-35deg) scale(0.65);
-}
-[data-theme="dark"] .shift-sun {
-  opacity: 0;
-  transform: rotate(70deg) scale(0.65);
-}
-[data-theme="dark"] .shift-moon {
   opacity: 1;
-  transform: rotate(0) scale(1);
+  transform: none;
 }
 @media (max-width: 1100px) {
   .nav-shell {
@@ -3820,24 +3801,24 @@ html {
 .anchor-section {
   scroll-margin-top: 0;
 }
-
-/* Use the exact favicon asset for the navigation identity. */
+/* Keep the inline S mark aligned with the header identity. */
 .brand-logo {
   display: block;
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 28px;
   flex-shrink: 0;
+  color: var(--accent);
 }
 @media (min-width: 651px) and (max-width: 850px) {
   .brand-logo {
-    width: 35px;
-    height: 35px;
+    width: 23px;
+    height: 27px;
   }
 }
 @media (max-width: 650px) {
   .brand-logo {
-    width: 33px;
-    height: 33px;
+    width: 22px;
+    height: 26px;
   }
 }
 
@@ -3877,4 +3858,260 @@ html {
 .certificate,
 .contact-links {
   min-width: 0;
+}
+
+/* Near-black canvas, deep orange accents, and a smoked-glass workbench. */
+:root[data-theme="dark"],
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] #root {
+  background-color: #080909;
+}
+
+:root[data-theme="dark"] .workbench {
+  background: rgb(10 11 11 / 82%);
+  color: #E7E8DE;
+  border-color: rgb(154 134 116 / 24%);
+  backdrop-filter: blur(20px) saturate(72%);
+  -webkit-backdrop-filter: blur(20px) saturate(72%);
+  box-shadow: inset 0 1px rgb(255 255 255 / 4%), 0 24px 56px -42px #000;
+}
+
+:root[data-theme="dark"] .architecture-art {
+  color: #8F8980;
+  background-image: radial-gradient(rgb(210 197 181 / 7%) 0.65px, transparent 0.65px);
+}
+
+:root[data-theme="dark"] .architecture-coordinate,
+:root[data-theme="dark"] .workbench-top > .mono,
+:root[data-theme="dark"] .workbench-panel p,
+:root[data-theme="dark"] .workbench-rows > div > span:last-child {
+  color: #A6A198;
+}
+
+:root[data-theme="dark"] .workbench-tabs {
+  border-color: #292A28;
+}
+
+:root[data-theme="dark"] .workbench-tabs > button {
+  color: #A3A39D;
+}
+
+:root[data-theme="dark"] .workbench-tabs > button[aria-selected="true"] {
+  color: #E7E8DE;
+}
+
+:root[data-theme="dark"] .workbench-rows > div {
+  border-color: #252625;
+}
+
+:root[data-theme="dark"] .workbench-rows > div > span:first-child {
+  color: #D5D3CC;
+}
+
+:root[data-theme="dark"] .workbench-rows i {
+  background: #D05E15;
+}
+
+:root[data-theme="dark"] .workbench-tabs .tab-indicator {
+  background: #D05E15;
+}
+
+:root[data-theme="dark"] .workbench svg {
+  filter: grayscale(0.72) brightness(0.78) sepia(0.16);
+}
+
+/* Dark burnt-orange theme and readable ink on orange surfaces. */
+:root[data-theme="dark"] .button:not(.button-secondary),
+:root[data-theme="dark"] .step-number,
+:root[data-theme="dark"] .exhibit-arrow,
+:root[data-theme="dark"] .round-icon,
+:root[data-theme="dark"] .project-mini-link:hover .round-icon {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+:root[data-theme="dark"] .button:not(.button-secondary) .button-icon {
+  background: rgb(16 19 19 / 14%);
+  color: var(--on-accent);
+}
+
+:root[data-theme="dark"] .contact-section {
+  background: var(--bg);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .contact-section .contact-top .mono,
+:root[data-theme="dark"] .contact-section .availability,
+:root[data-theme="dark"] .contact-section .contact-layout h2 em,
+:root[data-theme="dark"] .contact-section .email-link,
+:root[data-theme="dark"] .contact-section .contact-links > a > span:first-child,
+:root[data-theme="dark"] .contact-section .contact-links > a svg {
+  color: var(--accent);
+}
+
+:root[data-theme="dark"] .contact-section .contact-layout h2,
+:root[data-theme="dark"] .contact-section .contact-links > a {
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .contact-section .contact-layout p {
+  color: var(--muted);
+}
+
+:root[data-theme="dark"] .contact-section .copy-email button {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--accent);
+}
+
+:root[data-theme="dark"] .contact-section .copy-email button svg {
+  color: var(--accent);
+}
+
+/* Clear, tactile feedback when a portfolio action is pressed. */
+.button {
+  transform: translate(var(--button-x, 0px), var(--button-y, 0px));
+  transition:
+    transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 240ms ease,
+    filter 180ms ease;
+}
+
+.button:active {
+  transform: translate(var(--button-x, 0px), var(--button-y, 0px)) scale(0.96);
+  filter: brightness(1.12);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 24%, transparent),
+    0 8px 26px color-mix(in srgb, var(--accent) 28%, transparent);
+  transition-duration: 90ms;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}
+
+/* Keep the interaction glow tied to the foreground color. */
+:root[data-theme="dark"] .button-secondary,
+:root[data-theme="dark"] .hero-contact,
+:root[data-theme="dark"] .contact-links > a {
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 220ms ease,
+    filter 220ms ease,
+    text-shadow 220ms ease;
+}
+
+:root[data-theme="dark"] .button-secondary:hover,
+:root[data-theme="dark"] .button-secondary:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 72%, var(--border));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 0 22px color-mix(in srgb, var(--accent) 32%, transparent);
+}
+
+:root[data-theme="dark"] .hero-contact:hover,
+:root[data-theme="dark"] .hero-contact:focus-visible,
+:root[data-theme="dark"] .contact-links > a:hover,
+:root[data-theme="dark"] .contact-links > a:focus-visible {
+  text-shadow: 0 0 8px color-mix(in srgb, var(--accent) 82%, transparent);
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--accent) 48%, transparent));
+}
+
+:root[data-theme="dark"] .desktop-nav a:focus-visible,
+:root[data-theme="dark"] .desktop-nav a[aria-current="location"],
+:root[data-theme="dark"] .mobile-menu a:hover,
+:root[data-theme="dark"] .mobile-menu a:focus-visible,
+:root[data-theme="dark"] .mobile-menu a[aria-current="location"],
+:root[data-theme="dark"] .search-trigger:hover,
+:root[data-theme="dark"] .search-trigger:focus-visible,
+:root[data-theme="dark"] .text-link:hover,
+:root[data-theme="dark"] .text-link:focus-visible,
+:root[data-theme="dark"] .source-files a:hover,
+:root[data-theme="dark"] .source-files a:focus-visible,
+:root[data-theme="dark"] .link-card a:hover,
+:root[data-theme="dark"] .link-card a:focus-visible,
+:root[data-theme="dark"] .personal-links > div > a:hover,
+:root[data-theme="dark"] .personal-links > div > a:focus-visible,
+:root[data-theme="dark"] .copy-email button:hover,
+:root[data-theme="dark"] .copy-email button:focus-visible,
+:root[data-theme="dark"] .repo-button:hover,
+:root[data-theme="dark"] .repo-button:focus-visible {
+  text-shadow: 0 1px 3px rgb(0 0 0 / 95%), 0 0 9px rgb(0 0 0 / 72%);
+  filter: drop-shadow(0 0 5px rgb(0 0 0 / 74%));
+}
+
+:root[data-theme="dark"] .search-trigger:hover,
+:root[data-theme="dark"] .search-trigger:focus-visible {
+  box-shadow: 0 0 17px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+:root[data-theme="dark"] .contact-section .email-link {
+  position: relative;
+  transition:
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 220ms ease,
+    text-shadow 220ms ease,
+    filter 220ms ease;
+}
+
+:root[data-theme="dark"] .contact-section .email-link:hover,
+:root[data-theme="dark"] .contact-section .email-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  text-shadow: 0 0 3px color-mix(in srgb, var(--accent) 24%, transparent);
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 22%, transparent));
+}
+
+:root[data-theme="dark"] .contact-section .email-link:active {
+  transform: translateY(0) scale(0.99);
+}
+
+:root[data-theme="dark"] .contact-section .copy-email button {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease;
+}
+
+:root[data-theme="dark"] .contact-section .copy-email button:hover,
+:root[data-theme="dark"] .contact-section .copy-email button:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent),
+    0 0 12px color-mix(in srgb, var(--accent) 19%, transparent);
+  filter: none;
+  text-shadow: none;
+  transform: translateY(-1px);
+}
+
+:root[data-theme="dark"] .contact-section .copy-email button:active {
+  transform: translateY(1px) scale(0.97);
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+}
+
+:root[data-theme="dark"] .contact-section .copy-email button[data-status="copied"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+:root[data-theme="dark"] .contact-section .copy-email button[data-status="copied"] svg {
+  color: var(--on-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="dark"] .contact-section .email-link,
+  :root[data-theme="dark"] .contact-section .copy-email button {
+    transition: none;
+  }
 }

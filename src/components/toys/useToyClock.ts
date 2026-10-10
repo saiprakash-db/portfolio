@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useMotionValue, useReducedMotion } from "framer-motion";
-export function useToyClock(duration: number) {
+export function useToyClock(duration: number, forceAnimation = false) {
   const time = useMotionValue(0),
-    reduced = useReducedMotion();
+    prefersReducedMotion = useReducedMotion(),
+    reduced = Boolean(prefersReducedMotion && !forceAnimation);
   const frame = useRef(0);
   const [state, setState] = useState<"ready" | "playing" | "done">("ready");
   const stop = () => cancelAnimationFrame(frame.current);

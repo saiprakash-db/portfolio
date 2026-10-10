@@ -8,8 +8,20 @@ import {
   IMPACT_TIME,
 } from "../../lib/toy-physics";
 import { useToyClock } from "./useToyClock";
+
+function stumpPose(time: number, delay: number, direction: number, angle: number) {
+  const elapsed = Math.max(0, time - IMPACT_TIME - delay);
+  const fall = 1 - Math.exp(-5.5 * elapsed);
+  return {
+    x: direction * 8 * fall,
+    y: 2 * fall,
+    rotation:
+      angle * fall + 7 * Math.exp(-8 * elapsed) * Math.sin(24 * elapsed),
+  };
+}
+
 export function CricketToy() {
-  const clock = useToyClock(CRICKET_DURATION),
+  const clock = useToyClock(CRICKET_DURATION, true),
     id = useId().replace(/:/g, ""),
     copy = playfulUI.cricket;
   const pose = useTransform(clock.time, cricketPose);
@@ -17,10 +29,22 @@ export function CricketToy() {
     y = useTransform(pose, (p) => p.y),
     rotate = useTransform(pose, (p) => p.rotation);
   const shadow = useTransform(y, (v) => 0.35 + (0.65 * v) / 180);
-  const tilt = useTransform(clock.time, (t) => {
-    const d = Math.max(0, t - IMPACT_TIME);
-    return 7 * Math.exp(-5 * d) * Math.sin(23 * d);
-  });
+  const leftStump = useTransform(clock.time, (t) => stumpPose(t, 0, -1, -88));
+  const middleStump = useTransform(clock.time, (t) =>
+    stumpPose(t, 0.035, 1, 88),
+  );
+  const rightStump = useTransform(clock.time, (t) =>
+    stumpPose(t, 0.07, 1, 110),
+  );
+  const leftStumpX = useTransform(leftStump, (p) => p.x),
+    leftStumpY = useTransform(leftStump, (p) => p.y),
+    leftStumpRotation = useTransform(leftStump, (p) => p.rotation);
+  const middleStumpX = useTransform(middleStump, (p) => p.x),
+    middleStumpY = useTransform(middleStump, (p) => p.y),
+    middleStumpRotation = useTransform(middleStump, (p) => p.rotation);
+  const rightStumpX = useTransform(rightStump, (p) => p.x),
+    rightStumpY = useTransform(rightStump, (p) => p.y),
+    rightStumpRotation = useTransform(rightStump, (p) => p.rotation);
   const left = useTransform(clock.time, (t) => bailPose(t, false)),
     right = useTransform(clock.time, (t) => bailPose(t, true));
   const lx = useTransform(left, (p) => p.x),
@@ -56,8 +80,38 @@ export function CricketToy() {
             THE QUIET OVER
           </text>
           <g transform="translate(352 190)">
-            <motion.g style={{ rotate: tilt, originX: 0.5, originY: 1 }}>
-              <path d="M-10 0v-74M0 0v-74M10 0v-74" className="toy-stumps" />
+            <motion.g
+              style={{
+                x: leftStumpX,
+                y: leftStumpY,
+                rotate: leftStumpRotation,
+                originX: 0.5,
+                originY: 1,
+              }}
+            >
+              <path d="M-10 0v-74" className="toy-stumps" />
+            </motion.g>
+            <motion.g
+              style={{
+                x: middleStumpX,
+                y: middleStumpY,
+                rotate: middleStumpRotation,
+                originX: 0.5,
+                originY: 1,
+              }}
+            >
+              <path d="M0 0v-74" className="toy-stumps" />
+            </motion.g>
+            <motion.g
+              style={{
+                x: rightStumpX,
+                y: rightStumpY,
+                rotate: rightStumpRotation,
+                originX: 0.5,
+                originY: 1,
+              }}
+            >
+              <path d="M10 0v-74" className="toy-stumps" />
             </motion.g>
           </g>
           <motion.g style={{ x: lx, y: ly, rotate: lr }}>

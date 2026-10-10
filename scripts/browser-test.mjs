@@ -12,7 +12,7 @@ const browser = await chromium.launch({
     : {}),
 });
 try {
-  for (const theme of ["light", "dark"]) {
+  for (const theme of ["dark"]) {
     const sizes = [
       ...widths.map((width) => ({ width, height: width < 500 ? 844 : 1000 })),
       ...[360, 390, 430].map((height) => ({ width: 844, height })),
@@ -35,7 +35,12 @@ try {
       assert.equal(
         await page.getAttribute("html", "data-theme"),
         theme,
-        "System theme honored",
+        "Dark theme is the default",
+      );
+      assert.equal(
+        await page.locator(".theme-toggle").count(),
+        0,
+        "Day/night theme control stays removed",
       );
       for (const section of [
         "overview",
@@ -237,7 +242,7 @@ try {
   }
   const page = await browser.newPage({
     viewport: { width: 1280, height: 900 },
-    colorScheme: "light",
+    colorScheme: "dark",
   });
   await page.goto(baseURL);
   await page.getByRole("tab", { name: /Ingest/ }).click();
@@ -257,8 +262,6 @@ try {
   await page
     .getByRole("heading", { name: "Give the data a purpose." })
     .waitFor();
-  await page.getByRole("button", { name: "Switch to Night Shift" }).click();
-  await page.waitForTimeout(750);
   assert.equal(await page.getAttribute("html", "data-theme"), "dark");
   await page.reload();
   assert.equal(
@@ -372,29 +375,12 @@ try {
   await page.keyboard.press("Enter");
   assert.equal(await page.locator(".no-results").isVisible(), true);
   await page.keyboard.press("Escape");
-  const locked = await browser.newContext({ colorScheme: "dark" });
-  await locked.addInitScript(() => {
-    Object.defineProperty(window, "localStorage", {
-      get() {
-        throw new Error("Storage blocked");
-      },
-    });
-  });
-  const lockedPage = await locked.newPage();
-  await lockedPage.goto(baseURL);
-  await lockedPage.getByRole("button", { name: "Switch to Day Shift" }).click();
-  assert.equal(
-    await lockedPage.getAttribute("html", "data-theme"),
-    "light",
-    "Storage failure fallback",
-  );
-  await locked.close();
   await writeFile(
     "reports/browser-results.json",
     JSON.stringify({ results, interactions: "PASS" }, null, 2),
   );
   console.log(
-    `PASS: ${results.length} viewport/theme cases, menu, command palette, theme persistence, blocked-storage fallback, section links and local assets.`,
+    `PASS: ${results.length} dark-theme viewport cases, menu, command palette, default theme, section links and local assets.`,
   );
 } finally {
   await browser.close();

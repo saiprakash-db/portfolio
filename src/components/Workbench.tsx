@@ -12,11 +12,6 @@ export function Workbench() {
       <div className="workbench">
         <div className="workbench-top">
           <span className="mono">{workbench.title}</span>
-          <span className="workbench-dots" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
         </div>
         <div className="architecture-art" aria-hidden="true">
           <svg viewBox="0 0 440 210" fill="none">

@@ -153,6 +153,15 @@
 .marble-rail {
   opacity: 0.6;
 }
+.marble-trail {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.82;
+  filter: drop-shadow(0 0 5px var(--accent));
+}
 .marble-inlet {
   stroke: var(--accent);
   stroke-width: 1.5;
@@ -166,6 +175,23 @@
   cursor: grab;
   touch-action: none;
   outline: none;
+}
+.marble-glow {
+  fill: var(--accent);
+  opacity: 0;
+  filter: blur(8px);
+}
+.marble-handle[aria-disabled="true"] .marble-glow {
+  animation: marble-glow-breathe 1.8s ease-in-out infinite;
+}
+@keyframes marble-glow-breathe {
+  0%,
+  100% {
+    opacity: 0.22;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 .marble-handle.is-dragging {
   cursor: grabbing;

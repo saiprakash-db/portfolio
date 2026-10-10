@@ -1,10 +1,47 @@
 import {
+  useEffect,
   useRef,
-  useState,
   type AnchorHTMLAttributes,
   type ReactNode,
 } from "react";
 import { useReducedMotion } from "framer-motion";
+
+export function CursorGlow() {
+  const cursorRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!matchMedia("(any-pointer: fine)").matches) return;
+    const cursor = cursorRef.current;
+    if (!cursor) return;
+
+    const move = (event: PointerEvent) => {
+      cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+      cursor.classList.add("is-visible");
+      const target = event.target;
+      const interactive =
+        target instanceof Element &&
+        Boolean(target.closest("a, button, [role='button'], input, textarea"));
+      cursor.classList.toggle("is-over-interactive", interactive);
+    };
+    const leave = () => {
+      cursor.classList.remove("is-visible", "is-over-interactive");
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    document.documentElement.addEventListener("pointerleave", leave);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      document.documentElement.removeEventListener("pointerleave", leave);
+    };
+  }, []);
+
+  return (
+    <span className="cursor-follow" ref={cursorRef} aria-hidden="true">
+      <span className="cursor-aura" />
+      <span className="cursor-dot" />
+    </span>
+  );
+}
+
 export function Icon({
   name = "arrow",
   size = 20,
@@ -121,10 +158,18 @@ export function Button({
         if (reduced || !matchMedia("(hover:hover) and (pointer:fine)").matches)
           return;
         const r = e.currentTarget.getBoundingClientRect();
-        e.currentTarget.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.035}px, ${(e.clientY - r.top - r.height / 2) * 0.06}px)`;
+        e.currentTarget.style.setProperty(
+          "--button-x",
+          `${(e.clientX - r.left - r.width / 2) * 0.035}px`,
+        );
+        e.currentTarget.style.setProperty(
+          "--button-y",
+          `${(e.clientY - r.top - r.height / 2) * 0.06}px`,
+        );
       }}
       onPointerLeave={() => {
-        if (ref.current) ref.current.style.transform = "";
+        ref.current?.style.removeProperty("--button-x");
+        ref.current?.style.removeProperty("--button-y");
       }}
     >
       {children}
@@ -132,106 +177,6 @@ export function Button({
         <Icon name={download ? "download" : "arrow"} size={16} />
       </span>
     </a>
-  );
-}
-export function ThemeToggle() {
-  const [theme, setTheme] = useState(() =>
-    typeof document === "undefined"
-      ? "light"
-      : document.documentElement.dataset.theme || "light",
-  );
-  const reduced = useReducedMotion();
-  const busy = useRef(false);
-  const change = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (busy.current) return;
-    const next = theme === "dark" ? "light" : "dark";
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = rect.left + rect.width / 2,
-      y = rect.top + rect.height / 2;
-    const radius = Math.hypot(
-      Math.max(x, innerWidth - x),
-      Math.max(y, innerHeight - y),
-    );
-    const apply = () => {
-      document.documentElement.dataset.theme = next;
-      document
-        .querySelector('meta[name="theme-color"]')
-        ?.setAttribute("content", next === "dark" ? "#0E1114" : "#FAF8F5");
-      setTheme(next);
-      try {
-        localStorage.setItem("sai-theme", next);
-      } catch {
-        /* Storage is optional. */
-      }
-    };
-    if (!document.startViewTransition || reduced) {
-      apply();
-      if (!reduced && document.documentElement.animate)
-        document.documentElement.animate([{ opacity: 0.75 }, { opacity: 1 }], {
-          duration: 220,
-        });
-      return;
-    }
-    busy.current = true;
-    try {
-      const transition = document.startViewTransition(apply);
-      await transition.ready;
-      await document.documentElement.animate(
-        {
-          clipPath: [
-            `circle(0px at ${x}px ${y}px)`,
-            `circle(${radius}px at ${x}px ${y}px)`,
-          ],
-        },
-        {
-          duration: 570,
-          easing: "cubic-bezier(.22,1,.36,1)",
-          pseudoElement: "::view-transition-new(root)",
-        },
-      ).finished;
-      await transition.finished;
-    } catch {
-      apply();
-    } finally {
-      busy.current = false;
-    }
-  };
-  return (
-    <button
-      className="theme-toggle"
-      onClick={change}
-      aria-label={`Switch to ${theme === "dark" ? "Day" : "Night"} Shift`}
-      title={`Switch to ${theme === "dark" ? "Day" : "Night"} Shift`}
-    >
-      <span className="shift-symbol" aria-hidden="true">
-        <svg
-          className="shift-sun"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        >
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
-        </svg>
-        <svg
-          className="shift-moon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M19.8 15.4A8.4 8.4 0 0 1 8.6 4.2a8.5 8.5 0 1 0 11.2 11.2Z" />
-          <path d="M17.5 3v4m-2-2h4M21 9v2m-1-1h2" />
-        </svg>
-      </span>
-      <span className="theme-label">
-        {theme === "dark" ? "Night" : "Day"} shift
-      </span>
-    </button>
   );
 }
 export function SectionHeading({

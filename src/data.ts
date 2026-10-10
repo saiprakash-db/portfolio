@@ -22,8 +22,11 @@ export const profile = {
   languages: ["English", "Telugu", "Hindi"],
 };
 export const navigation = [
+  { id: "home", label: "Profile" },
+  { id: "overview", label: "Overview" },
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
+  { id: "journey", label: "Journey" },
   { id: "about", label: "About" },
   { id: "contact", label: "Contact" },
 ];

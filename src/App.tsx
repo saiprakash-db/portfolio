@@ -12,9 +12,9 @@ import {
 import { Count, Reveal } from "./motion";
 import {
   Icon,
+  CursorGlow,
   External,
   Button,
-  ThemeToggle,
   SectionHeading,
 } from "./components/ui";
 import { ProjectMini, ProjectStory } from "./components/projects";
@@ -23,6 +23,7 @@ import { Workbench } from "./components/Workbench";
 import { CricketToy } from "./components/toys/CricketToy";
 import { MarblePipeline } from "./components/toys/MarblePipeline";
 import { CopyEmail } from "./components/CopyEmail";
+import { scrollToSection } from "./lib/scroll-to-section";
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -34,14 +35,15 @@ export default function App() {
   useEffect(() => {
     const initialHash = location.hash;
     if (!initialHash) return;
+    const initialId = decodeURIComponent(initialHash.slice(1));
+    if (navigation.some((item) => item.id === initialId))
+      setActiveSection(initialId);
     let cancelled = false;
     document.fonts.ready.then(() => {
       requestAnimationFrame(() =>
         requestAnimationFrame(() => {
           if (cancelled || location.hash !== initialHash) return;
-          document
-            .getElementById(initialHash.slice(1))
-            ?.scrollIntoView({ block: "start", behavior: "instant" });
+          scrollToSection(initialId, "auto");
         }),
       );
     });
@@ -56,7 +58,7 @@ export default function App() {
       "overview",
       "projects",
       "skills",
-      "education",
+      "journey",
       "about",
       "contact",
     ];
@@ -103,13 +105,43 @@ export default function App() {
     };
   }, [scrollYProgress]);
   useEffect(() => {
+    const handleAnchorClick = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      )
+        return;
+      const link = (event.target as Element).closest<HTMLAnchorElement>(
+        'a[href^="#"]',
+      );
+      if (!link) return;
+      const id = decodeURIComponent(link.hash.slice(1));
+      if (!id || id === "main" || !document.getElementById(id)) return;
+
+      event.preventDefault();
+      if (location.hash !== `#${id}`)
+        history.pushState(null, "", `#${id}`);
+      if (navigation.some((item) => item.id === id)) setActiveSection(id);
+      const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth";
+      requestAnimationFrame(() => scrollToSection(id, behavior));
+    };
+    document.addEventListener("click", handleAnchorClick);
+    return () => document.removeEventListener("click", handleAnchorClick);
+  }, []);
+  useEffect(() => {
     if (!menuOpen) return;
     const onPointer = (event: PointerEvent) => {
       if (!(event.target as Element).closest(".site-header"))
         setMenuOpen(false);
     };
     const onResize = () => {
-      if (window.innerWidth > 650) setMenuOpen(false);
+      if (window.innerWidth > 1000) setMenuOpen(false);
     };
     window.addEventListener("pointerdown", onPointer);
     window.addEventListener("resize", onResize);
@@ -148,6 +180,7 @@ export default function App() {
   }, [commandOpen]);
   return (
     <>
+      <CursorGlow />
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -163,13 +196,16 @@ export default function App() {
             className="brand"
             aria-label="Sai Prakash Lingala, home"
           >
-            <img
+            <svg
               className="brand-logo"
-              src="/favicon.svg"
-              alt=""
-              width="40"
-              height="40"
-            />
+              viewBox="0 0 40 40"
+              aria-hidden="true"
+            >
+              <path
+                d="M39 2 16 6C8 7 4 12 4 16c0 3 4 5 10 7l11 4 5 2-4 3-8-3c-6-2-9-1-13 4L1 39l22-4c9-1 14-6 14-10 0-4-4-6-10-9l-10-4 4-4 14-2Z"
+                fill="var(--accent)"
+              />
+            </svg>
             <span className="brand-text">
               <span>
                 Sai Prakash<span className="brand-surname"> Lingala</span>
@@ -178,15 +214,19 @@ export default function App() {
             </span>
           </a>
           <nav className="desktop-nav" aria-label="Main navigation">
-            {navigation.map((n) => (
-              <a
-                href={`#${n.id}`}
-                key={n.id}
-                aria-current={activeSection === n.id ? "location" : undefined}
-              >
-                <span className="nav-link-label">{n.label}</span>
-              </a>
-            ))}
+            {navigation
+              .filter((n) => n.id !== "contact")
+              .map((n) => (
+                <a
+                  href={`#${n.id}`}
+                  key={n.id}
+                  aria-current={
+                    activeSection === n.id ? "location" : undefined
+                  }
+                >
+                  <span className="nav-link-label">{n.label}</span>
+                </a>
+              ))}
           </nav>
           <div className="nav-actions">
             <button
@@ -202,7 +242,10 @@ export default function App() {
             >
               <Icon name="search" size={20} />
             </button>
-            <ThemeToggle />
+            <a className="contact-nav-cta" href="#contact">
+              <span>Contact</span>
+              <span className="contact-nav-arrow"><Icon size={14} /></span>
+            </a>
             <button
               className={`menu-toggle icon-button ${menuOpen ? "is-open" : ""}`}
               aria-expanded={menuOpen}
@@ -236,6 +279,16 @@ export default function App() {
                 <Icon />
               </a>
             ))}
+            <button
+              className="mobile-search-link"
+              onClick={() => {
+                setMenuOpen(false);
+                setCommandOpen(true);
+              }}
+            >
+              Search portfolio
+              <Icon name="search" />
+            </button>
             <a
               href={profile.resume}
               download
@@ -381,7 +434,7 @@ export default function App() {
               </a>
             </Reveal>
             <Reveal className="bento-cert">
-              <a href="#education" className="card small-card">
+              <a href="#journey" className="card small-card">
                 <div className="card-top">
                   <span className="credential-icon">✓</span>
                   <Icon size={17} />
@@ -484,7 +537,7 @@ export default function App() {
           </div>
         </section>
         <section
-          id="education"
+          id="journey"
           className="container education-section anchor-section"
         >
           <Reveal>
@@ -496,6 +549,7 @@ export default function App() {
           </Reveal>
           <div className="education-layout">
             <div className="education-timeline">
+              <h3 className="eyebrow education-column-title">Journey</h3>
               {education.map((e) => (
                 <Reveal key={e.school}>
                   <div className="education-item">
@@ -509,6 +563,7 @@ export default function App() {
               ))}
             </div>
             <div className="certificates">
+              <h3 className="eyebrow education-column-title">Credentials</h3>
               {certifications.map((c) => (
                 <Reveal key={c.title}>
                   <div className="certificate card">
