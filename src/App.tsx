@@ -207,9 +207,7 @@ export default function App() {
               />
             </svg>
             <span className="brand-text">
-              <span>
-                Sai Prakash<span className="brand-surname"> Lingala</span>
-              </span>
+              <span>Sai Prakash Lingala</span>
               <small>Data engineering portfolio</small>
             </span>
           </a>

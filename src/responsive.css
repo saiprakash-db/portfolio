@@ -167,6 +167,53 @@
     gap: 20px 12px;
   }
 }
+
+/* Text-only header identity matching the compact two-line brand reference. */
+.site-header .brand {
+  gap: 11px;
+  flex-shrink: 0;
+}
+.site-header .brand-logo {
+  display: block;
+  width: 28px;
+  height: 30px;
+  flex-shrink: 0;
+}
+.site-header .brand-text {
+  gap: 1px;
+  line-height: 1.22;
+}
+.site-header .brand-text > span {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--text);
+}
+.site-header .brand-text > small {
+  display: block;
+  font-family: var(--body);
+  font-size: 12px;
+  line-height: 1.3;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+@media (max-width: 650px) {
+  .site-header .brand {
+    gap: 8px;
+  }
+  .site-header .brand-logo {
+    width: 24px;
+    height: 26px;
+  }
+  .site-header .brand-text > span {
+    font-size: 13px;
+  }
+  .site-header .brand-text > small {
+    font-size: 10px;
+  }
+}
 @media (max-width: 359px) {
   .contact-top {
     align-items: flex-start;
