@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
-  useReducedMotion,
   useScroll,
+  useMotionValueEvent,
   useTransform,
   type MotionValue,
 } from "framer-motion";
@@ -15,13 +15,11 @@ import {
 function Segment({
   segment,
   progress,
-  reduced,
 }: {
   segment: RouteSegment;
   progress: MotionValue<number>;
-  reduced: boolean;
 }) {
-  const scaleX = useTransform(progress, [segment.start, segment.end], [0, 1], {
+  const fill = useTransform(progress, [segment.start, segment.end], [0, 1], {
     clamp: true,
   });
   return (
@@ -35,7 +33,7 @@ function Segment({
         x2={segment.length}
         y2="0"
         className="route-fill"
-        style={{ scaleX: reduced ? 1 : scaleX, originX: 0, originY: 0 }}
+        style={{ pathLength: fill }}
       />
     </g>
   );
@@ -43,16 +41,25 @@ function Segment({
 
 export function Pipeline({ stages }: { stages: string[] }) {
   const list = useRef<HTMLOListElement>(null);
-  const reduced = useReducedMotion();
   const [geometry, setGeometry] = useState({
     width: 0,
     height: 0,
     segments: [] as RouteSegment[],
+    stageProgress: [] as number[],
   });
-  const { scrollYProgress } = useScroll({
+  const [passedStages, setPassedStages] = useState(0);
+  const { scrollYProgress: progress } = useScroll({
     target: list,
-    offset: ["start 85%", "end 45%"],
+    offset: ["start 90%", "end 10%"],
   });
+  useMotionValueEvent(progress, "change", (value) => {
+    const count = geometry.stageProgress.filter((stage) => value >= stage).length;
+    setPassedStages((current) => (current === count ? current : count));
+  });
+  useEffect(() => {
+    const count = geometry.stageProgress.filter((stage) => progress.get() >= stage).length;
+    setPassedStages(count);
+  }, [geometry.stageProgress, progress]);
   useEffect(() => {
     const element = list.current;
     if (!element) return;
@@ -68,10 +75,12 @@ export function Pipeline({ stages }: { stages: string[] }) {
           bottom: item.offsetTop + item.offsetHeight,
         };
       });
+      const route = buildPipelineRoute(nodes, element.clientWidth);
       setGeometry({
         width: element.clientWidth,
         height: element.clientHeight,
-        segments: buildPipelineRoute(nodes, element.clientWidth).segments,
+        segments: route.segments,
+        stageProgress: route.stageProgress,
       });
     };
     const observer = new ResizeObserver(measure);
@@ -85,11 +94,11 @@ export function Pipeline({ stages }: { stages: string[] }) {
     };
   }, [stages]);
   const x = useTransform(
-    scrollYProgress,
+    progress,
     (p) => pointOnRoute(geometry.segments, p).x,
   );
   const y = useTransform(
-    scrollYProgress,
+    progress,
     (p) => pointOnRoute(geometry.segments, p).y,
   );
   return (
@@ -105,19 +114,19 @@ export function Pipeline({ stages }: { stages: string[] }) {
             <Segment
               key={`${geometry.width}-${geometry.height}-${i}`}
               segment={segment}
-              progress={scrollYProgress}
-              reduced={Boolean(reduced)}
+              progress={progress}
             />
           ))}
-          {!reduced && (
-            <motion.circle r="3.5" className="route-packet" style={{ x, y }} />
-          )}
+          <motion.circle r="3.5" className="route-packet" style={{ x, y }} />
         </svg>
       )}
       <ol ref={list} className="pipeline-stages">
         {stages.map((stage, i) => (
           <li key={stage}>
-            <span className="stage-dot" aria-hidden="true" />
+            <span
+              className={`stage-dot${i < passedStages ? " is-passed" : ""}`}
+              aria-hidden="true"
+            />
             <span className="mono">{String(i + 1).padStart(2, "0")}</span>
             <span>{stage}</span>
           </li>

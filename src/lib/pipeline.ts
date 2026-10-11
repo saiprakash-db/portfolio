@@ -10,6 +10,7 @@ export type RouteSegment = {
 };
 export function buildPipelineRoute(nodes: StagePoint[], width: number) {
   const points: Point[] = [];
+  const stagePointIndexes: number[] = [];
   let rowBottom = 0;
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
@@ -24,6 +25,7 @@ export function buildPipelineRoute(nodes: StagePoint[], width: number) {
       );
       rowBottom = 0;
     }
+    stagePointIndexes.push(points.length);
     points.push({ x: node.x, y: node.y });
     rowBottom = Math.max(rowBottom, node.bottom);
   }
@@ -36,6 +38,8 @@ export function buildPipelineRoute(nodes: StagePoint[], width: number) {
     }))
     .filter((s) => s.length > 0);
   const total = raw.reduce((sum, s) => sum + s.length, 0);
+  const cumulative = [0];
+  raw.forEach((segment) => cumulative.push(cumulative[cumulative.length - 1] + segment.length));
   let distance = 0;
   const segments: RouteSegment[] = raw.map((s) => {
     const start = distance / total;
@@ -47,7 +51,10 @@ export function buildPipelineRoute(nodes: StagePoint[], width: number) {
       angle: (Math.atan2(s.to.y - s.from.y, s.to.x - s.from.x) * 180) / Math.PI,
     };
   });
-  return { points, segments, total };
+  const stageProgress = stagePointIndexes.map((index) =>
+    total ? cumulative[index] / total : 0,
+  );
+  return { points, segments, stageProgress, total };
 }
 export function pointOnRoute(
   segments: RouteSegment[],
